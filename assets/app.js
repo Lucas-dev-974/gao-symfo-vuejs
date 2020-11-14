@@ -15,7 +15,8 @@ Vue.use(Vuetify)
 const app = new Vue({
     el: '#app',
     vuetify: new Vuetify,
-
+    delimiters: ['.{', '}'],
+    data: {
+        'test': 'salute'
+    }
 })
-
-console.log('Hello Webpack Encore! Edit me in assets/app.js');
