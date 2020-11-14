@@ -1,10 +1,13 @@
 <template>
-   <div>
-       <p>This is an example of a new components in VueJs</p>
-   </div>
+   <v-app>
+        <router-view>
+            
+        </router-view>
+    </v-app>
 </template>
+
 <script>
    export default {
-       name: "example"
+       name: "layout"
    }
 </script>
