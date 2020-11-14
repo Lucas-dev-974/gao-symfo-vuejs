@@ -9,6 +9,7 @@
 import './styles/app.css';
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import Layout from './layout.vue'
 
 Vue.use(Vuetify)
 
@@ -16,7 +17,11 @@ const app = new Vue({
     el: '#app',
     vuetify: new Vuetify,
     delimiters: ['.{', '}'],
+    components: {Layout},
     data: {
         'test': 'salute'
     }
-})
+});
+
+
+export default new Vuetify(app);
