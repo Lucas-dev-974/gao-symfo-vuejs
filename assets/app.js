@@ -9,19 +9,17 @@
 import './styles/app.css';
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import Layout from './layout.vue'
+import Router from './router.js'
+import Layout from './js/layout/layout.vue'
 
-Vue.use(Vuetify)
+
+Vue.use(Vuetify);
 
 const app = new Vue({
     el: '#app',
     vuetify: new Vuetify,
-    delimiters: ['.{', '}'],
-    components: {Layout},
-    data: {
-        'test': 'salute'
-    }
+    router: Router,
+    components: { Layout }
 });
-
 
 export default new Vuetify(app);
