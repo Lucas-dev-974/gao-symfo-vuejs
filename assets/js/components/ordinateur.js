@@ -28,6 +28,8 @@ export default{
 
     methods: {
         initialize(){
+            console.log('okok');
+            console.log(this.ordinateur);
             this.ordinateur.attribution.forEach(element => {
                 this.attributions[element.horraire] ={
                     id:     element.id,

@@ -22,7 +22,7 @@ class ComputersRepository extends ServiceEntityRepository
     // /**
     //  * @return Computers[] Returns an array of Computers objects
     //  */
-    /*
+    
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('c')
@@ -34,7 +34,7 @@ class ComputersRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Computers

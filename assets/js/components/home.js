@@ -21,11 +21,13 @@ export default{
 
     methods: {
         init(){
-            
+            console.log('ok');
             this.ordinateurs = []  // important pour réactualiser le tableau a chaque changement de date
-            Axios.get('/api/ordinateurs', { params: {date: this.date}})
+            Axios.get('/computers/a')
             .then(({data}) => {
-                data.data.forEach(element => {
+                let json = JSON.parse(data);
+                json.forEach(element => {
+                    console.log(element);
                     this.ordinateurs.push(element);
                 })
             })
