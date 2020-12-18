@@ -36,7 +36,7 @@ export default{
         updateViewOrdi(nomOrdi){
             return this.ordinateurs.push(nomOrdi)
         },
-
+ 
         delOrdi(id_ordi){
             Axios.post('/api/ordinateurs/delOrdi?id=' + id_ordi).then(({data}) => {
                 unset(this.ordinateurs, id_ordi)
