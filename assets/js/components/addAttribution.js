@@ -32,10 +32,11 @@ export default{
     watch:{
         input(val){
             if(val && val.length > 2){
-                Axios.get('/api/clients/search', { params: {inputName: val}})
-                .then(({data}) => {
+                Axios.get('/api/clients/autocompleteName', { params: {inputName: val}})
+                .then(({data}) => { 
                     data.forEach(element => {
-                        this.clients.push(this.makeClient(element))
+                        console.log(element);
+                        this.clients.push(this.makeClient(element)) 
                     })
                 })
             }  
@@ -45,9 +46,8 @@ export default{
 
     methods:{  
         attribute() {
-            Axios.post('/api/attributions?date=' + this.date + "&heure=" + this.horraire.index + "&id_ordi=" + this.ordinateur + "&id_client=" + this.model.id)
+            Axios.post('/api/assignements/add?date=' + this.date + "&horraire=" + this.horraire.index + "&computerId=" + this.ordinateur + "&clientId=" + this.model.id)
             .then(response => {
-                console.log(response.data)
                 this.$emit('AddAttribution', this.AttrClient(response.data.id))
                 this.modal = false
             }).catch(error => {
@@ -58,9 +58,9 @@ export default{
         makeClient(client){
             return {
                 id:       client.id,
-                name:     client.nom,
-                ls_name:  client.prenom,
-                all_name: client.nom + ' ' + client.prenom,
+                name:     client.name,
+                ls_name:  client.lastName,
+                all_name: client.name + ' ' + client.lastName,
             }
         },
 

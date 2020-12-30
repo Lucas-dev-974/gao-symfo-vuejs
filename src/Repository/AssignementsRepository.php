@@ -18,7 +18,6 @@ class AssignementsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Assignements::class);
     }
-
     // /**
     //  * @return Assignements[] Returns an array of Assignements objects
     //  */

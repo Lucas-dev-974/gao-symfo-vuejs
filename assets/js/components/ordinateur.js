@@ -28,20 +28,19 @@ export default{
 
     methods: {
         initialize(){
-            console.log('okok');
-            console.log(this.ordinateur);
-            this.ordinateur.attribution.forEach(element => {
-                this.attributions[element.horraire] ={
+            
+            this.ordinateur.attributions.forEach(element => {
+                this.attributions[element.horraire] = {
                     id:     element.id,
-                    nom:    element.client.nom,
-                    prenom: element.client.prenom,
+                    nom:    element.client.name,
+                    prenom: element.client.lastName,
                 };
             });
-            this.horraire = []
             this.displayHorraire();
         },
 
         displayHorraire(){
+            this.horraire = []
             let data = {} 
             for(let i = 8; i < 19; i++){
                 if(this.attributions[i]){
@@ -59,11 +58,6 @@ export default{
             }   
         },
 
-        deleteAttr(horraire){
-            unset(this.horraire, horraire)
-            this.initialize()
-        },
-
         AddAttribution(attr){
             this.attributions[attr.horraire] = {
                 id:  attr.id_client,
@@ -78,10 +72,10 @@ export default{
         },
 
         delAttr(horraire){
-            Axios.get('/api/attributions/' + this.attributions[horraire].id)
+            Axios.post('/api/assignements/delete?assignementId=' + this.attributions[horraire].id)
             .then(({data}) => {
                 unset(this.attributions, horraire)
-                this.initialize()
+                this.displayHorraire()
             })
             .catch(error => {
                 console.log(error)

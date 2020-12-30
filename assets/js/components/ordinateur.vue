@@ -1,7 +1,7 @@
 <template>
     <v-card width="150" max-width="300" min-width="250" >
-        <v-row justify="around">
-            <v-card-title class=""> {{ ordinateur.name }} </v-card-title>
+        <v-row class="justify-content-around">
+            <v-card-title> {{ ordinateur.name }} </v-card-title>
             <deleteOrdinateur @deleteOrdi="deleteOrdi" :ordi="this.ordinateur" />
         </v-row>
         <v-card-text>

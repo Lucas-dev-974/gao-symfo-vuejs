@@ -19,6 +19,16 @@ class ClientsRepository extends ServiceEntityRepository
         parent::__construct($registry, Clients::class);
     }
 
+    public function Autocomplete($data){
+        return $this->getEntityManager()
+        ->createQuery('
+            SELECT clients FROM App\Entity\Clients clients WHERE clients.name LIKE :data
+        ')
+
+        ->setParameter('data', '%'.$data.'%')
+        ->getResult();
+    }
+    
     // /**
     //  * @return Clients[] Returns an array of Clients objects
     //  */

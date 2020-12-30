@@ -21,15 +21,16 @@ export default{
 
     methods: {
         init(){
-            console.log('ok');
             this.ordinateurs = []  // important pour réactualiser le tableau a chaque changement de date
-            Axios.get('/computers/a')
+
+            Axios.get('/api/computers', {params: {data: this.date}})
             .then(({data}) => {
-                let json = JSON.parse(data);
-                json.forEach(element => {
-                    console.log(element);
-                    this.ordinateurs.push(element);
-                })
+                console.log('-----');
+                data = JSON.parse(data)
+                console.log(data);
+                data.forEach(element => {
+                    this.ordinateurs.push(element)
+                });
             })
         },
 
@@ -38,12 +39,17 @@ export default{
         },
  
         delOrdi(id_ordi){
-            Axios.post('/api/ordinateurs/delOrdi?id=' + id_ordi).then(({data}) => {
+            Axios.post('/api/computers/delete?computerId=' + id_ordi).then(({data}) => {
                 unset(this.ordinateurs, id_ordi)
                 this.init()
+                console.log('ok delete');
             }).catch(error => {
                 console.log(error);
             })
         },
+
+        removeAttr(){
+            
+        }
     }
 }

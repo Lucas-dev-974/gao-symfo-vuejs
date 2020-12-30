@@ -17,15 +17,16 @@ class Assignements
      */
     private $id;
 
+    
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=Computers::class, inversedBy="attributions")
      */
-    private $id_client;
+    private $computer;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=Clients::class, inversedBy="attributions")
      */
-    private $id_computer;
+    private $clients;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -42,26 +43,26 @@ class Assignements
         return $this->id;
     }
 
-    public function getIdClient(): ?int
+    public function getClient(): ?Clients
     {
-        return $this->id_client;
+        return $this->clients;
     }
 
-    public function setIdClient(int $id_client): self
+    public function setClient(Clients $clients): self
     {
-        $this->id_client = $id_client;
+        $this->clients = $clients;
 
         return $this;
     }
 
-    public function getIdComputer(): ?int
+    public function getComputer(): ?Computers
     {
-        return $this->id_computer;
+        return $this->computer;
     }
 
-    public function setIdComputer(int $id_computer): self
+    public function setComputer(Computers $computer): self
     {
-        $this->id_computer = $id_computer;
+        $this->computer = $computer;
 
         return $this;
     }

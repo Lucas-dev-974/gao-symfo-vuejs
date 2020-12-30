@@ -17,7 +17,11 @@ export default{
     methods: {
         addOrdi: function(){
             name = this.ordiNameInput
-            Axios.post('/api/ordinateurs/', {nom : name}).then(({ data }) => {
+            console.log(name);
+            Axios.post('/api/computers/add?computerName=' + name)
+            .then(({ data }) => {
+                console.log('------');
+                console.log(data)
                 this.dialog = false
                 this.ordiNameInput = ''
                 this.$emit('addview', data.data)

@@ -2,54 +2,96 @@
 
 namespace App\Controller;
 
+use App\Entity\Assignements;
 use App\Entity\Computers;
+use App\Repository\AssignementsRepository;
 use App\Repository\ComputersRepository;
+use DateTime;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ComputersController extends AbstractController
 {
     /**
-     * @Route("/computers/{slug}", name="computers", methods={"GET", "HEAD"})
+     * @Route("/api/computers", name="computers", methods={"GET"})
      */
-    public function getComputer(String $slug) : JsonResponse
+    public function getComputer(Request $request, ComputersRepository $computerRepository, AssignementsRepository $assignementsRepository, SerializerInterface $serializer) : JsonResponse
     {
-        $normalizer = new ObjectNormalizer();
-        $encoder = new JsonEncoder();
-        $serializer = new Serializer([$normalizer], [$encoder]);
+        $date = $request->query->get('date');
+        $computerData = [];
+
+        // get computers with its attributions
+        $computers = $computerRepository->findAll();    
         
-        $data = $this->getDoctrine()->getRepository(Computers::class)->findAll();
-        $test = $serializer->serialize($data, 'json');
+        foreach ($computers as $computer){
+            $attribution = $assignementsRepository->findBy(['date' => new DateTime($date), 'computer' => $computer]);
+            $attributions = [];
+            // return new JsonResponse($serializer->serialize($attribution, 'json'));
+            foreach($attribution as $attr){
+                if($attr->getComputer() === $computer){
+                    $attributions[] = [
+                        'id'       => $attr->getId(),
+                        'horraire' => $attr->getHorraire(),
+                        'date'     => $attr->getDate()->format('Y-m-d'),
+                        'client'   => $attr->getClient(),
+                        'computer' => $attr->getComputer()
+                    ];  
+                }
+            }
+            
+
+            // format in array computer data
+            $computerData[] = [
+                'id' => $computer->getId(),
+                'name' => $computer->getName(),
+                'attributions' => $attributions
+            ];
+
+        }
+        $json = $serializer->serialize($computerData, 'json');
+        return new JsonResponse($json);
         
-        return new JsonResponse($test);
     }
 
     /**
-     * @Route("/computers/basicAdd", name="basicAdd")
+     * @Route("/api/computers/add", name="computersAdd", methods="POST")
      */
-    public function basicAdd(): Response
+    public function add(Request $request): Response
     {
+        $name = $request->query->get('computerName');
+
         $entityManager = $this->getDoctrine()->getManager();
         $computer = new Computers();
-        $computer->setName('ordi 1');
-        
+        $computer->setName($name);
         $entityManager->persist($computer);
         $entityManager->flush();
 
         return new Response('data with id: ' . $computer->getid() . ' saved');
     }
 
+
     /**
-     * @Route("/url/{id}", name="computersid")
+     * @Route("/api/computers/delete", name="computersDelete", methods="POST")
      */
-    public function getid(int $id): Response
-    {
-        return new Response('id' . $id);
+    public function delete(Request $request){
+        $id = $request->query->get('computerId');
+        $computerManager = $this->getDoctrine()->getManager();
+        $computer = $computerManager->getRepository(Computers::class)->find($id);
+
+        if(!$computer){
+            return new JsonResponse('Aucun ordinateur avec l\'id ' . $id . ' n\'a était trouver. suppression impossible');
+        }else{
+            $computerManager->remove($computer);
+            $computerManager->flush();
+            return new JsonResponse('ok ordinateur supprimer !');
+        }
     }
+
 
 }

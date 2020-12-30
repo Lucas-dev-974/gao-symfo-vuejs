@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Computers;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,9 +20,9 @@ class ComputersRepository extends ServiceEntityRepository
         parent::__construct($registry, Computers::class);
     }
 
-    // /**
-    //  * @return Computers[] Returns an array of Computers objects
-    //  */
+    /**
+     * @return Computers[] Returns an array of Computers objects
+     */
     
     public function findByExampleField($value)
     {
